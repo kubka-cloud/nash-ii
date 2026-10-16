@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<title>НАШ ИИ — твоя AI-студия</title>
+<style>
+:root{--bg:#0b1020;--panel:#151c31;--panel2:#1b2440;--purple:#8b5cf6;--cyan:#22d3ee;--white:#f8fafc;--muted:#9ca8c7;--border:#2a3555;--green:#34d399;--pink:#f472b6}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--white);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.app{max-width:760px;min-height:100vh;margin:auto;display:flex;flex-direction:column;background:radial-gradient(ellipse at 100% 0%,#28204b44,transparent 36%),var(--bg)}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:12px;padding:calc(12px + env(safe-area-inset-top)) 18px 12px;background:#0b1020ed;backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(140deg,var(--purple),#5b4bd8);display:grid;place-items:center;font-size:24px;box-shadow:0 8px 24px #8b5cf633}
+.brand{font-weight:900;letter-spacing:1.5px;font-size:16px}.brand-sub{font-size:9px;color:var(--muted);letter-spacing:1.8px;margin-top:3px}
+.status{margin-left:auto;border:1px solid var(--border);border-radius:99px;padding:7px 10px;display:flex;align-items:center;gap:7px;font-size:10px;color:var(--muted);font-weight:800;letter-spacing:1px}.dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+main{flex:1;padding:18px 18px 104px}.screen{display:none}.screen.active{display:block}
+.hero{position:relative;overflow:hidden;background:linear-gradient(145deg,#171e35,#15182c);border:1px solid var(--border);border-radius:26px;padding:23px;margin-bottom:27px}
+.badge{display:inline-flex;align-items:center;gap:7px;background:#24304b;padding:7px 10px;border-radius:99px;color:var(--cyan);font-size:9px;font-weight:900;letter-spacing:1.5px}
+h1{font-size:clamp(29px,7vw,38px);line-height:1.15;letter-spacing:-1.1px;margin:24px 0 12px;position:relative;z-index:1}h1 span{color:var(--cyan)}
+.hero p{color:var(--muted);font-size:14px;line-height:1.6;max-width:340px;position:relative;z-index:1}
+.orb{position:absolute;border:1px solid #8b5cf633;border-radius:50%;width:150px;height:150px;right:-55px;top:25px}.orb:after{content:"";position:absolute;border:1px solid #22d3ee44;border-radius:50%;width:90px;height:90px;right:22px;top:25px}
+.btn{border:0;border-radius:13px;background:var(--purple);color:white;font-weight:800;padding:13px 16px;box-shadow:0 8px 22px #8b5cf622;transition:transform .15s,opacity .15s}.btn:active{transform:scale(.98)}.btn:disabled{opacity:.45;cursor:default}.hero .btn{position:relative;z-index:1;margin-top:8px}
+.section-title{font-size:19px;font-weight:850;margin:0 0 14px}
+.feature{width:100%;display:flex;align-items:center;gap:14px;text-align:left;background:var(--panel);border:1px solid var(--border);padding:14px;border-radius:18px;margin-bottom:10px;color:inherit}
+.feature-icon{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;font-size:23px;flex-shrink:0}.feature-info{flex:1}.feature-title{font-size:14px;font-weight:850}.feature-desc{font-size:11px;line-height:1.5;color:var(--muted);margin-top:4px}.chevron{font-size:26px;color:var(--muted)}
+.note{color:var(--muted);font-size:11px;line-height:1.6;margin-top:14px}
+.page-title{font-size:28px;font-weight:900;letter-spacing:-.6px;margin:7px 0}.page-sub{font-size:13px;line-height:1.6;color:var(--muted);margin:0 0 22px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:17px;margin-bottom:14px}.label{display:block;color:var(--muted);font-size:10px;font-weight:900;letter-spacing:1.4px;margin:0 0 10px}
+textarea,input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:13px;padding:14px;color:var(--white);outline:none;resize:vertical}textarea:focus,input:focus{border-color:var(--purple)}textarea::placeholder,input::placeholder{color:#7f8bad}
+.duration{margin-top:17px;padding:13px;background:var(--panel2);border-radius:13px}.duration p{margin:0;color:var(--white);font-weight:750;font-size:13px}.muted-small{font-size:11px;line-height:1.6;color:var(--muted);margin-top:7px}
+.result{display:none;background:#102d2b;border:1px solid #1d5b52;border-radius:17px;padding:16px;margin-top:14px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;line-height:1.65}.result.show{display:block}.result strong{display:block;color:var(--green);font-size:10px;letter-spacing:1.2px;margin-bottom:9px}
+.info{background:var(--panel2);padding:16px;border-radius:17px;margin-top:15px}.info b{font-size:14px}.info p{font-size:12px;line-height:1.65;color:var(--muted);margin:7px 0 0}
+.messages{display:flex;flex-direction:column;gap:12px}.message{padding:14px;border-radius:16px;max-width:92%;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;line-height:1.55}.message.ai{align-self:flex-start;background:var(--panel);border:1px solid var(--border)}.message.user{align-self:flex-end;background:#38276c}.message-label{display:block;font-size:9px;letter-spacing:1.4px;color:var(--cyan);font-weight:900;margin-bottom:7px}
+.chat-compose{position:sticky;bottom:76px;display:flex;gap:9px;align-items:flex-end;padding:12px 0;background:linear-gradient(transparent,var(--bg) 18%)}.chat-compose textarea{min-height:48px;max-height:130px;resize:vertical}
+.bottom-nav{position:fixed;z-index:8;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,760px);display:flex;justify-content:space-around;background:#0d1427f5;backdrop-filter:blur(18px);border-top:1px solid var(--border);padding:9px 8px calc(8px + env(safe-area-inset-bottom))}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:none;color:var(--muted);padding:5px}.nav-item .ico{font-size:21px}.nav-item .nav-label{font-size:10px}.nav-item.active{color:var(--cyan)}.nav-item.active .nav-label{color:var(--white);font-weight:800}
+.empty{text-align:center;padding:28px 20px;background:var(--panel);border:1px solid var(--border);border-radius:20px;margin-top:20px}.empty-icon{font-size:38px;color:var(--purple)}.empty h3{margin:10px 0 7px}.empty p{font-size:12px;line-height:1.6;color:var(--muted);margin:0}
+.profile-row{display:flex;align-items:center;gap:13px;padding:16px;background:var(--panel);border:1px solid var(--border);border-radius:17px;margin-bottom:14px}.avatar{width:48px;height:48px;border-radius:16px;background:var(--purple);display:grid;place-items:center;font-weight:900}.setting{display:flex;justify-content:space-between;align-items:center;padding:16px 4px;border-bottom:1px solid var(--border);font-size:13px}
+.error{background:#3a1728;border:1px solid #7f294d;color:#ffd4e1;padding:12px;border-radius:12px;margin-top:12px;font-size:12px;line-height:1.5;display:none}.error.show{display:block}
+@media(min-width:600px){main{padding:26px 26px 110px}.hero{padding:30px}.feature{padding:17px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="logo">✦</div><div><div class="brand">НАШ ИИ</div><div class="brand-sub">ТВОЯ AI-СТУДИЯ</div></div><div class="status"><span class="dot"></span><span>МОЙ ИИ</span></div></header>
+<main>
+<section class="screen active" id="home">
+  <div class="hero"><div class="orb"></div><div class="badge"><span class="dot"></span> ТВОЯ AI-СТУДИЯ</div><h1>Идеи становятся<br><span>реальностью.</span></h1><p>Чат, тексты, изображения и видеопроекты — в одном приложении.</p><button class="btn" onclick="navigate('chat')">Начать общение →</button></div>
+  <h2 class="section-title">Что создадим сегодня?</h2>
+  <button class="feature" onclick="navigate('chat')"><span class="feature-icon" style="background:#8b5cf622;color:#8b5cf6">✦</span><span class="feature-info"><span class="feature-title">Чат с ИИ</span><span class="feature-desc" style="display:block">Задавай вопросы и обсуждай идеи</span></span><span class="chevron">›</span></button>
+  <button class="feature" onclick="openCreate('video')"><span class="feature-icon" style="background:#22d3ee22;color:#22d3ee">▶</span><span class="feature-info"><span class="feature-title">Создать видео</span><span class="feature-desc" style="display:block">Планируй длинные ролики по сценам</span></span><span class="chevron">›</span></button>
+  <button class="feature" onclick="openCreate('image')"><span class="feature-icon" style="background:#f472b622;color:#f472b6">▧</span><span class="feature-info"><span class="feature-title">Создать изображение</span><span class="feature-desc" style="display:block">Опиши картинку, которую хочешь увидеть</span></span><span class="chevron">›</span></button>
+  <button class="feature" onclick="openCreate('text')"><span class="feature-icon" style="background:#34d39922;color:#34d399">✎</span><span class="feature-info"><span class="feature-title">Написать текст</span><span class="feature-desc" style="display:block">Истории, сценарии и публикации</span></span><span class="chevron">›</span></button>
+  <p class="note">Это HTML-приложение. Для настоящей генерации подключи безопасный сервер с ИИ API.</p>
+</section>
+
+<section class="screen" id="chat">
+  <h1 class="page-title">Чат с ИИ</h1><p class="page-sub">Твой универсальный помощник</p>
+  <div class="messages" id="messages"><div class="message ai"><span class="message-label">НАШ ИИ</span>Привет! Я НАШ ИИ. Напиши, что хочешь придумать.</div></div>
+  <div class="chat-compose"><textarea id="chatInput" rows="1" placeholder="Напиши сообщение..."></textarea><button class="btn" id="sendChat" onclick="sendChat()">↑</button></div>
+  <div class="error" id="chatError"></div>
+</section>
+
+<section class="screen" id="create">
+  <h1 class="page-title" id="createTitle">Создать видео</h1><p class="page-sub" id="createSub">Опиши идею — начнём с плана.</p>
+  <div class="card"><label class="label" for="prompt">ТВОЁ ОПИСАНИЕ</label><textarea id="prompt" rows="5" placeholder="Опиши, что нужно создать..."></textarea>
+    <div class="duration" id="durationBox"><span class="label">ДЛИТЕЛЬНОСТЬ</span><p>15 мин · 30 мин · 1 час и больше</p><div class="muted-small">Длинные ролики создаются из множества сцен. Сейчас можно сгенерировать подробный план видео.</div></div>
+    <button class="btn" id="createButton" style="width:100%" onclick="submitCreate()">Создать план видео</button>
+    <div class="error" id="createError"></div>
+  </div>
+  <div class="result" id="createResult"><strong>РЕЗУЛЬТАТ</strong><div id="createResultText"></div></div>
+  <div class="info"><b>Как это работает</b><p id="createInfo">Для готового часового видео понадобится видеогенератор, серверная очередь задач и сборка сцен в один файл.</p></div>
+</section>
+
+<section class="screen" id="projects">
+  <h1 class="page-title">Мои проекты</h1><p class="page-sub">Твои работы на этом устройстве</p>
+  <div id="projectList"></div><div class="empty" id="emptyProjects"><div class="empty-icon">▤</div><h3>Пока пусто</h3><p>Созданные здесь результаты можно сохранять в этом браузере.</p></div>
+</section>
+
+<section class="screen" id="profile">
+  <h1 class="page-title">Профиль</h1><p class="page-sub">Настройки приложения</p>
+  <div class="profile-row"><div class="avatar">ИИ</div><div><div class="feature-title">НАШ ИИ</div><div class="feature-desc">Твоя AI-студия</div></div></div>
+  <div class="setting"><span>Язык</span><span style="color:var(--muted)">Русский</span></div><div class="setting"><span>Тема</span><span style="color:var(--muted)">Тёмная</span></div><div class="setting"><span>Режим</span><span style="color:var(--muted)">HTML-приложение</span></div>
+  <div class="info"><b>Подключение ИИ</b><p>Для реальных ответов нужен сервер. В настройках сервера укажи ключ провайдера. Не вставляй секретный API-ключ в этот HTML-файл.</p></div>
+</section>
+</main>
+<nav class="bottom-nav">
+  <button class="nav-item active" data-tab="home" onclick="navigate('home')"><span class="ico">⌂</span><span class="nav-label">Главная</span></button>
+  <button class="nav-item" data-tab="chat" onclick="navigate('chat')"><span class="ico">✦</span><span class="nav-label">Чат</span></button>
+  <button class="nav-item" data-tab="projects" onclick="navigate('projects')"><span class="ico">▤</span><span class="nav-label">Проекты</span></button>
+  <button class="nav-item" data-tab="profile" onclick="navigate('profile')"><span class="ico">○</span><span class="nav-label">Профиль</span></button>
+</nav>
+</div>
+<script>
+/*
+  OPTIONAL API SERVER:
+  Set API_BASE to your server URL, e.g. "https://your-domain.example".
+  Do not put secret provider API keys in this browser file.
+*/
+const API_BASE = ""; // Leave empty for demo mode, or set your deployed server URL.
+let createType = "video";
+let chatHistory = [];
+let projects = [];
+try { projects = JSON.parse(localStorage.getItem("nash_ii_projects") || "[]"); } catch(e) { projects=[]; }
+
+function navigate(id) {
+  document.querySelectorAll(".screen").forEach(x=>x.classList.toggle("active",x.id===id));
+  document.querySelectorAll(".nav-item").forEach(x=>x.classList.toggle("active",x.dataset.tab===id));
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(id==="projects") renderProjects();
+}
+function openCreate(type) {
+  createType=type;
+  const c={
+    video:{title:"Создать видео",sub:"Опиши идею. Сначала составим план сцен.",button:"Создать план видео",placeholder:"Например: документальный фильм о космосе на 60 минут",info:"Для готового видео на час и больше понадобится отдельный видеогенератор, серверная очередь задач и сборка сцен в один файл.",duration:true},
+    image:{title:"Создать изображение",sub:"Опиши картинку, которую хочешь получить.",button:"Сгенерировать изображение",placeholder:"Например: футуристический город на берегу океана",info:"Для настоящей генерации изображения подключи image API на сервере.",duration:false},
+    text:{title:"Написать текст",sub:"Создай рассказ, сценарий или публикацию.",button:"Создать текст",placeholder:"Например: напиши сценарий фантастического фильма",info:"Для генерации текста подключи языковую модель через сервер.",duration:false}
+  }[type];
+  document.getElementById("createTitle").textContent=c.title;
+  document.getElementById("createSub").textContent=c.sub;
+  document.getElementById("createButton").textContent=c.button;
+  document.getElementById("prompt").placeholder=c.placeholder;
+  document.getElementById("createInfo").textContent=c.info;
+  document.getElementById("durationBox").style.display=c.duration?"block":"none";
+  document.getElementById("createResult").classList.remove("show");
+  hideError("createError");
+  navigate("create");
+}
+function showError(id,text){const e=document.getElementById(id);e.textContent=text;e.classList.add("show")}
+function hideError(id){const e=document.getElementById(id);e.textContent="";e.classList.remove("show")}
+async function api(path,body){
+  if(!API_BASE) throw new Error("Демо-режим: сервер ИИ не подключён. Интерфейс работает, но для генерации нужно настроить API_BASE и сервер.");
+  const r=await fetch(API_BASE+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+  const data=await r.json(); if(!r.ok) throw new Error(data.error||"Ошибка сервера"); return data;
+}
+async function sendChat(){
+  const input=document.getElementById("chatInput"), text=input.value.trim();
+  if(!text)return;
+  input.value="";hideError("chatError");
+  addMessage("user",text);
+  const btn=document.getElementById("sendChat");btn.disabled=true;btn.textContent="…";
+  try {
+    const data=await api("/api/chat",{messages:[...chatHistory,{role:"user",content:text}]});
+    const reply=data.reply||data.text||"Пустой ответ";
+    chatHistory.push({role:"user",content:text},{role:"assistant",content:reply});
+    addMessage("ai",reply);
+  } catch(e) {
+    const reply="Я получил твой запрос, но сейчас работаю в демо-режиме. Чтобы отвечать по-настоящему, подключи сервер ИИ.\\n\\nТвой запрос: "+text;
+    chatHistory.push({role:"user",content:text},{role:"assistant",content:reply});addMessage("ai",reply);
+    if(API_BASE)showError("chatError",e.message);
+  } finally {btn.disabled=false;btn.textContent="↑"}
+}
+function addMessage(role,text){
+  const box=document.getElementById("messages"),div=document.createElement("div");
+  div.className="message "+role;const label=document.createElement("span");label.className="message-label";label.textContent=role==="user"?"ТЫ":"НАШ ИИ";div.appendChild(label);div.appendChild(document.createTextNode(text));box.appendChild(div);div.scrollIntoView({behavior:"smooth",block:"end"});
+}
+async function submitCreate(){
+  const prompt=document.getElementById("prompt").value.trim();if(!prompt)return;
+  const btn=document.getElementById("createButton");btn.disabled=true;btn.textContent="Создаём…";hideError("createError");
+  const paths={video:"/api/video/plan",image:"/api/image",text:"/api/text"};
+  let result;
+  try{
+    const data=await api(paths[createType],{prompt,durationMinutes:60});
+    result=data.text||data.reply||JSON.stringify(data,null,2);
+    if(data.imageUrl)result+="\\nИзображение: "+data.imageUrl;
+    if(data.imageBase64)result+="\\nИзображение создано; для отображения требуется подключить просмотр результата.";
+  }catch(e){
+    const titles={video:"План видео (демо)",image:"Изображение (демо)",text:"Текст (демо)"};
+    if(createType==="video")result=`Идея: ${prompt}\\n\\nПлан на 60 минут (черновой шаблон)\\n00:00–05:00 — Вступление и постановка темы\\n05:00–15:00 — Контекст и основные понятия\\n15:00–30:00 — Первая большая часть\\n30:00–45:00 — Развитие темы и примеры\\n45:00–55:00 — Главные выводы\\n55:00–60:00 — Итог и завершение\\n\\nЭто только шаблон плана, не готовый видеофайл. Подключи ИИ-сервер для подробного сценария и видеопровайдер для рендеринга.`;
+    else if(createType==="image")result=`Запрос на изображение:\\n${prompt}\\n\\nЭто демонстрационная карточка запроса. Для генерации настоящего изображения подключи image API на сервере.`;
+    else result=`Черновик запроса на текст:\\n${prompt}\\n\\nПодключи сервер языковой модели, чтобы получать полноценный сгенерированный текст.`;
+    if(API_BASE)showError("createError",e.message);
+  }finally{btn.disabled=false;btn.textContent=({video:"Создать план видео",image:"Сгенерировать изображение",text:"Создать текст"})[createType]}
+  document.getElementById("createResultText").textContent=result;
+  document.getElementById("createResult").classList.add("show");
+  projects.unshift({type:createType,title:({video:"Видеопроект",image:"Изображение",text:"Текст"})[createType],prompt,result,date:new Date().toLocaleString("ru-RU")});
+  projects=projects.slice(0,30);try{localStorage.setItem("nash_ii_projects",JSON.stringify(projects))}catch(e){}
+}
+function renderProjects(){
+  const list=document.getElementById("projectList"),empty=document.getElementById("emptyProjects");list.innerHTML="";
+  empty.style.display=projects.length?"none":"block";
+  projects.forEach((p,i)=>{
+    const card=document.createElement("div");card.className="card";
+    const title=document.createElement("div");title.className="feature-title";title.textContent=p.title+" · "+p.date;
+    const desc=document.createElement("p");desc.className="feature-desc";desc.textContent=p.prompt;
+    const open=document.createElement("button");open.className="btn";open.style.marginTop="12px";open.textContent="Открыть результат";open.onclick=()=>{openCreate(p.type);document.getElementById("prompt").value=p.prompt;document.getElementById("createResultText").textContent=p.result;document.getElementById("createResult").classList.add("show")};
+    card.append(title,desc,open);list.appendChild(card);
+  });
+}
+document.getElementById("chatInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendChat()}});
+</script>
+</body>
+</html>
